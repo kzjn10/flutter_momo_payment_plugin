@@ -12,6 +12,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   MomoPaymentResult _momoPaymentResult;
+  final color = const Color(0xffAF2170);
 
   @override
   void initState() {
@@ -23,44 +24,63 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: color,
           title: const Text('Plugin example app'),
         ),
         body: Center(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              FlatButton(
-                child: Text('Payment with momo'),
+              RaisedButton(
+                color: color,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100.0),
+                  side: BorderSide(
+                    width: 1,
+                    color: color,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                child: Text(
+                  'Payment with momo',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () async {
-                  MomoPaymentData momoPaymentData = MomoPaymentData(
-                    appScheme: "your_appScheme",
-                    merchantname: "your_merchantname",
-                    merchantcode: 'your_merchantcode',
-                    amount: 2000,
-                    orderId: 'orderId',
-                    orderLabel: 'orderLabel',
-                    merchantnamelabel: "sdsds",
-                    fee: 200,
-                    description: null,
-                    requestId: 'requestId',
-                    partnerCode: 'your_partnerCode',
-                  );
-
-                  MomoPaymentResult momoPaymentResult =
-                      await MomoPaymentPlugin().requestPayment(momoPaymentData);
-
-                  setState(() {
-                    _momoPaymentResult = momoPaymentResult;
-                  });
+                  await _doPaymentWithMomoWallet();
                 },
               ),
-              Text('Phone'),
-              Text(_momoPaymentResult?.phonenumber ?? ''),
-              Text('Token'),
-              Text(_momoPaymentResult?.token ?? ''),
+              SizedBox(
+                height: 20,
+              ),
+              Text('Phone: ${_momoPaymentResult?.phonenumber ?? '---'}'),
+              Text('Token: ${_momoPaymentResult?.token ?? '---'}'),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _doPaymentWithMomoWallet() async {
+    MomoPaymentData momoPaymentData = MomoPaymentData(
+      appScheme: "your_appScheme",
+      merchantname: "your_merchantname",
+      merchantcode: 'your_merchantcode',
+      amount: 2000,
+      orderId: 'orderId',
+      orderLabel: 'orderLabel',
+      merchantnamelabel: "sdsds",
+      fee: 200,
+      description: null,
+      requestId: 'requestId',
+      partnerCode: 'your_partnerCode',
+    );
+
+    MomoPaymentResult momoPaymentResult =
+        await MomoPaymentPlugin().requestPayment(momoPaymentData);
+
+    setState(() {
+      _momoPaymentResult = momoPaymentResult;
+    });
   }
 }
