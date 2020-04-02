@@ -11,6 +11,16 @@
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+* Step 2: Add ```maven { url 'https://jitpack.io' }``` to ```allprojects``` config in file ```build.gralde``` level android project:
+```xml
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
 ### 2. iOS set up:
 * Step 1: Update ```Info.plist``` file  as below:
